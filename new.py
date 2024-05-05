@@ -97,7 +97,6 @@ def send_message():
 
         next_node = new_node(path, final_destination)
         print(f"Mensaje encriptado -----> {message_encript_base64} type {type(message_encript_base64)}")
-        print(f"Mesanje desincriptado ------> {message_de.decode('utf-8')}")
         response = requests.post(f"http://{next_node['address']}/send", json={'message': message_encript_base64, 'final_destination': final_destination, 'path': path})
         if response.status_code == 200:
             try:
@@ -124,7 +123,8 @@ def send_message():
         message_final = message_final_encode.decode('utf-8')
 
         print(f"Mensaje recibido en destino final {node_id}: {message_final}")
-        return jsonify({'status': 'delivered', 'node': node_id, 'path': path, 'message': message_final}), 200
+        return jsonify({'status': 'delivered'}), 200
+        # return jsonify({'status': 'delivered', 'node': node_id, 'path': path, 'message': message}), 200
 
     remaining_nodes = [node for node in nodes_info if node['id'] not in path]
     if not remaining_nodes:
